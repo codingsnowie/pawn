@@ -63,6 +63,7 @@
     });
   }
   async function loadStockfish(){
+    if(window.PawniacSF){ try{ return await window.PawniacSF.get(); }catch(e){ console.warn('local engine not available, using the CDN one', e); } }
     var lastErr = null;
     for(var i = 0; i < SF_URLS.length; i++){
       try{
@@ -130,6 +131,7 @@
       w.addEventListener('message', h);
       w.postMessage('ucinewgame');
       w.postMessage('setoption name Contempt value 0');
+      w.postMessage('setoption name Skill Level value 20');
       w.postMessage('setoption name MultiPV value ' + multi);
       w.postMessage('position fen ' + fen);
       var lim = sfLimits(ms);

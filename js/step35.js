@@ -109,6 +109,13 @@
     if(eng.p) return eng.p;
     setEng('loading');
     eng.p = (async function(){
+      if(window.PawniacSF){
+        try{
+          var w0 = await window.PawniacSF.get();
+          w0.onerror = function(){ eng.w = null; eng.p = null; eng.state = 'idle'; };
+          eng.w = w0; setEng('ready'); return w0;
+        }catch(e){ console.warn('local engine not available, using the CDN one', e); }
+      }
       for(var a = 0; a < 3; a++){
         for(var i = 0; i < SF_URLS.length; i++){
           try{
@@ -147,6 +154,7 @@
           }
         }
         w.addEventListener('message', h);
+        w.postMessage('setoption name MultiPV value 1');
         w.postMessage('setoption name Skill Level value ' + S.skill);
         w.postMessage('position fen ' + fen);
         w.postMessage('go movetime ' + ms);
