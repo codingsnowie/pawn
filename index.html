@@ -1,0 +1,228 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pawniac</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='290 130 100 185'%3E%3Cpath d='M330,211 Q326,218 327,223 Q316,226 316,233 Q316,239 329,241 Q324,247 321,257 Q311,263 309,273 Q306,281 311,287 Q301,292 301,298 Q301,305 315,306 L365,306 Q379,305 379,298 Q379,292 369,287 Q374,281 371,273 Q369,263 359,257 Q356,247 351,241 Q364,239 364,233 Q364,226 353,223 Q354,218 350,211 Z' fill='%23141210' stroke='%23f7f2e4' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M376,184 Q381,175 376,166 Q371,157 366,148 Q361,138 350,138 Q340,138 330,138 Q320,138 314,148 Q309,157 304,166 Q299,175 304,184 Q309,194 314,203 Q319,211 330,211 Q340,211 350,211 Q361,211 366,203 Q373,194 376,184 Z' fill='%23f0a8c4' stroke='%23141210' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M340,138 Q337,175 340,211' fill='none' stroke='%23141210' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<link rel="stylesheet" href="css/core.css">
+<script src="js/core.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg class="brand-logo" viewBox="290 130 100 185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pawniac logo">
+        <title>Pawniac logo</title>
+        <path d="M330,211 Q326,218 327,223 Q316,226 316,233 Q316,239 329,241 Q324,247 321,257 Q311,263 309,273 Q306,281 311,287 Q301,292 301,298 Q301,305 315,306 L365,306 Q379,305 379,298 Q379,292 369,287 Q374,281 371,273 Q369,263 359,257 Q356,247 351,241 Q364,239 364,233 Q364,226 353,223 Q354,218 350,211 Z" fill="#141210" stroke="#f7f2e4" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M376,184 Q381,175 376,166 Q371,157 366,148 Q361,138 350,138 Q340,138 330,138 Q320,138 314,148 Q309,157 304,166 Q299,175 304,184 Q309,194 314,203 Q319,211 330,211 Q340,211 350,211 Q361,211 366,203 Q373,194 376,184 Z" fill="#f0a8c4" stroke="#141210" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M340,138 Q337,175 340,211" fill="none" stroke="#141210" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M330,140 Q337,145 344,138" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M314,148 Q325,142 336,146" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M344,144 Q355,149 368,142" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M306,163 Q319,169 335,161" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M347,159 Q360,165 373,157" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M310,181 Q324,187 340,179" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M342,177 Q356,183 372,175" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M316,196 Q328,201 342,195" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M340,193 Q353,199 366,192" fill="none" stroke="#141210" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <h1>Pawniac</h1>
+        <div class="sub">call the piece or the move and play it!</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+      <div class="userbox" id="userbox"></div>
+    </div>
+  </header>
+
+  <div id="screen-auth" style="display:none"></div>
+  <div id="screen-lobby" style="display:none"></div>
+  <div id="screen-waiting" style="display:none"></div>
+  <div id="screen-game" style="display:none"></div>
+  <div id="screen-leaderboard" style="display:none"></div>
+</div>
+
+<script src="js/core-b.js"></script>
+  <!-- ===== PAWNIAC STEP 1: NAV BAR (paste this whole block right before </body>) ===== -->
+<link rel="stylesheet" href="css/step01.css">
+<script src="js/step01.js"></script>
+<!-- ===== END STEP 1 ===== -->
+  <link rel="stylesheet" href="css/step01-b.css">
+  <!-- ===== PAWNIAC STEP 2: CHALLENGE LINKS (paste this whole block right before </body>, below step 1) ===== -->
+<script src="js/step02.js"></script>
+<!-- ===== END STEP 2 ===== -->
+<!-- ===== PAWNIAC STEP 3 v4: KNIGHT'S TOUR, EVERY RUN COUNTS (replaces the v3 block) ===== -->
+<link rel="stylesheet" href="css/step03.css">
+<script src="js/step03.js"></script>
+<!-- ===== END STEP 3 v4 ===== -->
+  <!-- ===== PAWNIAC STEP 4: STANDARD CHESS + CUSTOM TIME (paste this whole block right before </body>, below step 3) ===== -->
+<link rel="stylesheet" href="css/step04.css">
+<script src="js/step04.js"></script>
+<!-- ===== END STEP 4 ===== -->
+<!-- ===== PAWNIAC STEP 5 (no "Recent games"): PROFILES. Replaces your old step 5 block. ===== -->
+<link rel="stylesheet" href="css/step05.css">
+<script src="js/step05.js"></script>
+<!-- ===== END STEP 5 ===== -->
+  <!-- ===== PAWNIAC STEP 6: ABANDONMENT HANDLING (paste this whole block right before </body>, below step 5) ===== -->
+<link rel="stylesheet" href="css/step06.css">
+<script src="js/step06.js"></script>
+<!-- ===== END STEP 6 ===== -->
+<!-- ===== PAWNIAC STEP 7: SETTINGS (paste this whole block right before </body>, below step 6) ===== -->
+<link rel="stylesheet" href="css/step07.css">
+<script src="js/step07.js"></script>
+<!-- ===== END STEP 7 ===== -->
+  <!-- ===== PAWNIAC STEP 8: PROFILE PICTURES (paste right before </body>, below step 7) ===== -->
+<link rel="stylesheet" href="css/step08.css">
+<script src="js/step08.js"></script>
+<!-- ===== END STEP 8 ===== -->
+<!-- ===== PAWNIAC STEP 9: PLAYER NAMES + RATINGS ON THE BOARD, COUNTRY FLAGS (paste right before </body>, below step 8) ===== -->
+<link rel="stylesheet" href="css/step09.css">
+<script src="js/step09.js"></script>
+<!-- ===== END STEP 9 ===== -->
+  <!-- ===== PAWNIAC STEP 10: FASTER PIECES + LIVE STATS SIDEBAR (paste right before </body>, below step 9) ===== -->
+<link rel="preconnect" href="https://upload.wikimedia.org" crossorigin>
+<link rel="preconnect" href="https://commons.wikimedia.org" crossorigin>
+<link rel="stylesheet" href="css/step10.css">
+
+<!-- ---------- part A: piece images load fast ---------- -->
+<script src="js/step10.js"></script>
+
+<!-- ---------- part B: live stats (players online / games in progress / searching) ---------- -->
+<script src="js/step10-b.js"></script>
+<!-- ===== END STEP 10 ===== -->
+<!-- ===== PAWNIAC STEP 11 v2: FULL-WIDTH LOBBY + THIN LIVE BAR + CHESS QUOTE ===== -->
+<link rel="stylesheet" href="css/step11.css">
+<script src="js/step11.js"></script>
+<!-- ===== END STEP 11 v2 ===== -->
+  <!-- ===== PAWNIAC STEP 12: TIDY LOBBY CARDS (paste below step 11) ===== -->
+<link rel="stylesheet" href="css/step12.css">
+<!-- ===== END STEP 12 ===== -->
+  <!-- ===== PAWNIAC STEP 13: 2v2 QUICK MATCH (rated, shares the Hand & Brain rating) ===== -->
+<script src="js/step13.js"></script>
+<!-- ===== END STEP 13 ===== -->
+  <!-- ===== PAWNIAC STEP 14: EQUAL-SIZE LOBBY CARDS (paste at the very bottom) ===== -->
+<link rel="stylesheet" href="css/step14.css">
+<!-- ===== PAWNIAC STEP 15 v4: DRAG & DROP + PREMOVES (premoves survive your opponent moving) ===== -->
+<link rel="stylesheet" href="css/step15.css">
+<script src="js/step15.js"></script>
+<!-- ===== END STEP 15 v4 ===== -->
+<!-- ===== PAWNIAC STEP 16 v8: ANALYZE (replaces the whole old step 16 block) ===== -->
+<link rel="stylesheet" href="css/step16.css">
+<script src="js/step16.js"></script>
+<!-- ===== END STEP 16 v8 ===== -->
+  <!-- ===== PAWNIAC STEP 17: TIME PER MOVE (saved with every game) + ANALYZE SENDS THE TIMES (paste at the very bottom, below step 16) ===== -->
+<script src="js/step17.js"></script>
+<!-- ===== END STEP 17 ===== -->
+  <!-- ===== PAWNIAC STEP 18: SHAREABLE PAGE LINKS (paste at the very bottom, below step 17) ===== -->
+<script src="js/step18.js"></script>
+<!-- ===== END STEP 18 ===== -->
+  <!-- ===== PAWNIAC STEP 19: ANALYZE, EXPLANATION BESIDE THE BOARD (paste at the very bottom, below step 18) ===== -->
+<link rel="stylesheet" href="css/step19.css">
+<script src="js/step19.js"></script>
+<!-- ===== END STEP 19 ===== -->
+  <!-- ===== PAWNIAC STEP 20: ANALYSIS PDF REPORT (paste at the very bottom, below step 19) ===== -->
+<link rel="stylesheet" href="css/step20.css">
+<script src="js/step20.js"></script>
+<!-- ===== END STEP 20 ===== -->
+  <!-- ===== PAWNIAC STEP 21: PLAYER STATUS (online / idle / in a game / offline) + CHALLENGES (paste at the very bottom, below step 20) ===== -->
+<link rel="stylesheet" href="css/step21.css">
+<script src="js/step21.js"></script>
+<!-- ===== END STEP 21 ===== -->
+  <!-- ===== PAWNIAC STEP 22: PIECE AUCTION VARIANT ===== -->
+<link rel="stylesheet" href="css/step22.css">
+<script src="js/step22.js"></script>
+<!-- ===== END STEP 22 ===== -->
+  <!-- ===== PAWNIAC STEP 23: PIECE AUCTION RATED + LEADERBOARD + CHALLENGES ===== -->
+<script src="js/step23.js"></script>
+<!-- ===== END STEP 23 ===== -->
+<!-- ===== PAWNIAC STEP 24: BLINDFOLD BOARD MINIGAME ===== -->
+<link rel="stylesheet" href="css/step24.css">
+<script src="js/step24.js"></script>
+<!-- ===== END STEP 24 ===== -->
+  <!-- ===== PAWNIAC STEP 25: LOGIN + SIGN UP WITH GOOGLE AND DISCORD (paste at the very bottom, below step 24) ===== -->
+<link rel="stylesheet" href="css/step25.css">
+<script src="js/step25.js"></script>
+<!-- ===== END STEP 25 ===== -->
+  <!-- ===== PAWNIAC STEP 26: VISUAL POLISH (paste at the very bottom, below step 25. Styles only, nothing else changes) ===== -->
+<link rel="stylesheet" href="css/step26.css">
+<!-- ===== END STEP 26 ===== -->
+  <!-- ===== PAWNIAC STEP 27: TOTAL GAMES UNDER YOUR NAME (paste at the very bottom, below step 26) ===== -->
+<script src="js/step27.js"></script>
+<!-- ===== END STEP 27 ===== -->
+  <!-- ===== PAWNIAC STEP 28: BACKGROUND ON EVERY PAGE, FULL-WIDTH LOBBY BARS, BIGGER CENTRED LOGIN (paste at the very bottom, below step 27. Styles only) ===== -->
+<link rel="stylesheet" href="css/step28.css">
+<!-- ===== END STEP 28 ===== -->
+  <!-- ===== PAWNIAC STEP 29: PIECE ANIMATIONS (paste at the very bottom, below step 28) ===== -->
+<script src="js/step29.js"></script>
+<!-- ===== END STEP 29 ===== -->
+<!-- ===== PAWNIAC STEP 30 v2: PLAYER TITLES (GM, IM, ...) next to names (paste at the very bottom, below step 29) ===== -->
+<link rel="stylesheet" href="css/step30.css">
+<script src="js/step30.js"></script>
+<!-- ===== END STEP 30 v2 ===== -->
+<!-- ===== PAWNIAC STEP 31 v2: LEADERBOARD TAB FIX + NO RATING FOR GAMES THAT NEVER STARTED (replace old step 31; paste at the very bottom) ===== -->
+<script src="js/step31.js"></script>
+<!-- ===== END STEP 31 ===== -->
+  <!-- ===== PAWNIAC STEP 32: GAME NUMBERS (#/game/1, #/game/2 ...) + GAME HISTORY ON PROFILES (paste at the very bottom, below step 31) ===== -->
+<link rel="stylesheet" href="css/step32.css">
+<script src="js/step32.js"></script>
+<!-- ===== END STEP 32 ===== -->
+  <!-- ===== PAWNIAC STEP 33: PIECE AUCTION LEADERBOARD FIX (paste at the very bottom, below step 32) ===== -->
+<script src="js/step33.js"></script>
+<!-- ===== END STEP 33 ===== -->
+  <!-- ===== PAWNIAC STEP 34: JOINED DATE FOR EVERYONE + GAMES PLAYED / ANALYZED COUNTERS (paste at the very bottom, below step 33) ===== -->
+<script src="js/step34.js"></script>
+<!-- ===== END STEP 34 ===== -->
+<!-- ===== PAWNIAC STEP 35 v4: PLAY A BOT (timed, preset levels, drag and drop, premoves) (replaces step 35 v2; paste at the very bottom) ===== -->
+<link rel="stylesheet" href="css/step35.css">
+<script src="js/step35.js"></script>
+<!-- ===== END STEP 35 v4 ===== -->
+<!-- ===== PAWNIAC STEP 36 v3: WATCH LIVE GAMES + SHAREABLE LINK #/watch/CODE (replaces step 36; paste at the very bottom) ===== -->
+<link rel="stylesheet" href="css/step36.css">
+<script src="js/step36.js"></script>
+<!-- ===== END STEP 36 v3 ===== -->
+  <!-- ===== PAWNIAC STEP 37 v2: BOT GAMES COUNT IN "GAMES PLAYED TODAY / TOTAL" (replaces step 37; paste at the very bottom) ===== -->
+<script src="js/step37.js"></script>
+<!-- ===== END STEP 37 v2 ===== -->
+  <!-- ===== PAWNIAC STEP 38: OPENING QUIZ (paste at the very bottom, below step 32) ===== -->
+<link rel="stylesheet" href="css/step38.css">
+<script src="js/step38.js"></script>
+<!-- ===== END STEP 38 ===== -->
+  <!-- ===== PAWNIAC STEP 39: QUIZ DRAG & DROP (paste at the very bottom, below the quiz block) ===== -->
+<link rel="stylesheet" href="css/step39.css">
+<script src="js/step39.js"></script>
+<!-- ===== END STEP 39 ===== -->
+  <!-- ===== PAWNIAC STEP 40: "IN A GAME" STATUS DURING BOT GAMES ===== -->
+<script src="js/step40.js"></script>
+<!-- ===== END STEP 40 ===== -->
+  <!-- ===== PAWNIAC STEP 41: GAMES-PLAYED COUNTER FIX ===== -->
+<script src="js/step41.js"></script>
+<!-- ===== END STEP 41 ===== -->
+  <!-- ===== PAWNIAC STEP 42: WATCH BUTTON ON PROFILES (paste at the very bottom, below step 43) ===== -->
+<script src="js/step42.js"></script>
+<!-- ===== END STEP 42 ===== -->
+<!-- ===== PAWNIAC STEP 43: ANALYZE, TRY YOUR OWN LINES) ===== -->
+<link rel="stylesheet" href="css/step43.css">
+<script src="js/step43.js"></script>
+<!-- ===== END STEP 43 ===== -->
+  <!-- ===== PAWNIAC STEP 44: OPENING BOOK + OPENING FAIRNESS (paste at the very bottom, below step 45) ===== -->
+<script src="js/step44.js"></script>
+<!-- ===== END STEP 44 ===== -->
+  <!-- ===== PAWNIAC STEP 45: ANALYZE COACH, SMARTER + MORE STATEMENTS (paste at the very bottom, below step 44. Nothing in steps 16 to 44 needs editing) ===== -->
+<link rel="stylesheet" href="css/step45.css">
+<script src="js/step45.js"></script>
+<!-- ===== END STEP 45 ===== -->
+  <!-- ===== PAWNIAC STEP 46: RIGHT-CLICK ARROWS + SQUARE CIRCLES ON EVERY BOARD (paste at the very bottom, below step 45) ===== -->
+<link rel="stylesheet" href="css/step46.css">
+<script src="js/step46.js"></script>
+<!-- ===== END STEP 46 ===== -->
+  <!-- ===== PAWNIAC STEP 47: LINKS FOR PIECE AUCTION + PLAY BOT, AND A CORRECT "PLAYERS ONLINE" COUNT ===== -->
+<script src="js/step47.js"></script>
+<!-- ===== END STEP 47 ===== -->
+</html>
